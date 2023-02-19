@@ -1,49 +1,45 @@
 import java.io.*;
-import java.util.*;
+import java.util.PriorityQueue;
 
 public class Main {
 
-    private BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    private BufferedWriter wr = new BufferedWriter(new OutputStreamWriter(System.out));
-    public void run() {
-        PriorityQueue<Integer> pq = new PriorityQueue<Integer>();
-        Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+    public static void solution(int[] num) throws IOException{
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-        int data = 0;
-        int out = 0;
-        try {
-            int num = Integer.parseInt(br.readLine());
-            for(int i = 0; i < num; i++) {
-                data = Integer.parseInt(br.readLine());
-                if(data == 0)
-                    if(pq.isEmpty())
-                        wr.write("0\n");
-                    else {
-                        out = pq.poll();
-                        if(map.get(out * -1) == null || map.get(out * -1) == 0) wr.write(out + "\n");
-                        else {
-                            if(map.get(out * -1) > 0) {
-                                wr.write((out * -1) + "\n");
-                                map.put((out * -1), map.get((out * -1)) - 1);
-                            }
-                        }
-                    }
-                else {
-                    if(data < 0) {
-                        if(map.get(data) == null)
-                            map.put(data, 1);
-                        else
-                            map.put(data, map.get(data) + 1);
-                    }
-                    pq.add(Math.abs(data));
-                }
+        PriorityQueue<Integer> pq = new PriorityQueue<Integer>((o1, o2) -> {
+            int first_abs = Math.abs(o1);
+            int second_abs = Math.abs(o2);
+            if(first_abs == second_abs)
+                return o1 > o2 ? 1 : -1;
+            else
+                return first_abs - second_abs;
+        });
 
+        for(int i = 0; i < num.length; i++) {
+            if(num[i] == 0) {
+                if (pq.isEmpty())
+                    bw.write("0\n");
+                else
+                    bw.write(pq.poll() + "\n");
+
+            }else {
+                pq.add(num[i]);
             }
-            wr.flush();
-            wr.close();
-        } catch (IOException e) { e.printStackTrace(); }
-
+        }
+        bw.close();
     }
 
-    public static void main(String[] args) { new Main().run();}
+    public static void main(String[] args) {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        try {
+            int size = Integer.parseInt(br.readLine());
+            int[] num = new int[size];
+            for(int i = 0; i < size; i++) {
+                num[i] = Integer.parseInt(br.readLine());
+            }
+            solution(num);
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
