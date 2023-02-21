@@ -1,66 +1,63 @@
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
+    static List<Integer>[] list;
     static boolean[] visited;
-    static ArrayList<Integer>[] A;
-    public static boolean solution(int[] num, int nodeSize) {
+
+    public static int solution(int[] num, int nodeSize) {
+        list = new ArrayList[nodeSize];
+        visited = new boolean[nodeSize];
         for(int i = 0; i < nodeSize; i++) {
-            A[i] = new ArrayList<>();
+            list[i] = new ArrayList<>();
         }
-        //친구관계 형성
+
         for(int i = 0; i < num.length; i = i + 2) {
-            A[num[i]].add(num[i + 1]);
-            A[num[i + 1]].add(num[i]);
+            list[num[i]].add(num[i+1]);
+            list[num[i+1]].add(num[i]);
         }
 
         for(int i = 0; i < nodeSize; i++) {
-            //Arrays.fill(visited, false);
-
-            if(DFS(A[i], i,0)) return true;
+            if(DFS(list[i], i, 1)) return 1;
         }
-        return false;
+        return 0;
     }
 
-    public static boolean DFS(ArrayList<Integer> a,int index, int count) {
-        if(count == 4) {
+    public static boolean DFS(List<Integer> temp, int index, int depth) {
+        if(depth == 5) {
             return true;
-        }else {
-            visited[index] = true;
-            for(int i = 0; i < a.size(); i++) {
-                if(!visited[a.get(i)]) {
-                    visited[a.get(i)] = true;
-                    if(DFS(A[a.get(i)], a.get(i), count + 1)) return true;
+        }
+        visited[index] = true;
+        for(int i = 0; i < temp.size(); i++) {
+            if(!visited[temp.get(i)]) {
+                if(DFS(list[temp.get(i)], temp.get(i), depth + 1)) {
+                    return true;
                 }
             }
-            visited[index] = false;
-
         }
+        visited[index] = false;
         return false;
     }
+
 
     public static void main(String[] args) {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bw=  new BufferedWriter(new OutputStreamWriter(System.out));
+        BufferedWriter bw =  new BufferedWriter(new OutputStreamWriter(System.out));
 
         try {
             StringTokenizer st = new StringTokenizer(br.readLine(), " ");
             int nodeSize = Integer.parseInt(st.nextToken());
             int edgeSize = Integer.parseInt(st.nextToken());
-            A  = new ArrayList[nodeSize];
-            visited = new boolean[nodeSize];
             int[] num = new int[edgeSize * 2];
-
             for(int i = 0; i < num.length; i = i + 2) {
                 st = new StringTokenizer(br.readLine(), " ");
                 num[i] = Integer.parseInt(st.nextToken());
                 num[i + 1] = Integer.parseInt(st.nextToken());
             }
 
-            if(solution(num, nodeSize))  System.out.println("1");
-            else System.out.println(0);
+            bw.write(String.valueOf(solution(num, nodeSize)));
+            bw.close();
+
         } catch(IOException e) {
             e.printStackTrace();
         }
