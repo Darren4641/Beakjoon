@@ -1,26 +1,32 @@
 import java.io.*;
-import java.util.ArrayList;
 
 public class Main {
-    public static final int[] SOSU = {1, 3, 5, 7, 9};
+    public static final int[] COMPARE = {1, 3, 5, 7, 9};
 
-    public static void DFS(int number, int j, int size) throws IOException {
-        if(j == size) {
-            if(isPrime(number))
-                System.out.println(number);
+
+    public static void solution(int size) {
+        DFS(2, size, 1);
+        DFS(3, size, 1);
+        DFS(5, size, 1);
+        DFS(7, size, 1);
+    }
+
+    public static void DFS(int num, int size, int k) {
+        int temp;
+        if(k == size) {
+            System.out.println(num);
             return;
         }
-        for(int i = 0; i < SOSU.length; i++) {
-            if(isPrime(number * 10 + SOSU[i]))
-                DFS(number * 10 + SOSU[i], j + 1, size);
+        for (int j : COMPARE) {
+            temp = (num * 10) + j;
+            if (isPrime(temp)) DFS(temp, size, k + 1);
         }
-
-
     }
 
     public static boolean isPrime(int num) {
-        for(int i = 2; i <= num / 2; i++) {
-            if(num % i == 0) return false;
+        for(int i = 2; i <= (num / 2); i++) {
+            if(num % i == 0)
+                return false;
         }
         return true;
     }
@@ -30,13 +36,8 @@ public class Main {
 
         try {
             int size = Integer.parseInt(br.readLine());
-            //A = new ArrayList[size];
 
-            DFS(2, 1, size);
-            DFS(3, 1, size);
-            DFS(5, 1, size);
-            DFS(7, 1, size);
-
+            solution(size);
         } catch(IOException e) {
             e.printStackTrace();
         }
