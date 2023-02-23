@@ -5,26 +5,27 @@ import java.util.StringTokenizer;
 
 public class Main {
 
-    public static void solution(int[]media, int lessonCnt, int blueLayCnt) {
-
+    public static void solution(int[] media, int lessonCnt, int blueLayCnt) {
         int start = 0;
         int end = 0;
-        for(int i = 0; i < lessonCnt; i++) {
-            start = Math.max(start, media[i]);
-            end += media[i];
+        for(int i : media) {
+            start = Math.max(start, i);
+            end += i;
         }
 
-        int mid;
+        int cnt;
+        int sum = 0;
+        int mid = 0;
         while(start <= end) {
-            int sum = 0;
-            int cnt = 0;
             mid = (start + end) / 2;
-            for(int i = 0; i < lessonCnt; i++) {
-                if(sum + media[i] > mid) {
-                    cnt++;
+            cnt = 0;
+            sum = 0;
+            for(int i : media) {
+                if(sum + i > mid) {
                     sum = 0;
+                    cnt++;
                 }
-                sum += media[i];
+                sum += i;
             }
             if(sum != 0) cnt++;
 
@@ -33,11 +34,8 @@ public class Main {
             }else {
                 end = mid - 1;
             }
-
         }
         System.out.println(start);
-
-
 
     }
 
