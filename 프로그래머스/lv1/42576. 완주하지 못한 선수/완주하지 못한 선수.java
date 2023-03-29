@@ -13,17 +13,18 @@ class Solution {
                 part.put(p, part.get(p) + 1);
         }
             
-        for(String c : completion) {
-            if(part.containsKey(c))
-                part.put(c, part.get(c) - 1);
+         for(String c : completion) {
+             if(part.containsKey(c))
+                 part.put(c, part.get(c) - 1);
+         }
+        
+        for(String k : part.keySet()) {
+            if(part.get(k) != 0)
+                answer = k;
         }
         
-        List<Map.Entry<String, Integer>> entryList = new LinkedList<Map.Entry<String, Integer>>(part.entrySet());
-        entryList.sort(Map.Entry.comparingByValue());
-             
         
-        
-        return entryList.get(entryList.size() - 1).getKey();
+        return answer;
     }
     
 
