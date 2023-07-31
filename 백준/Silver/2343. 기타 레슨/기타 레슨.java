@@ -1,60 +1,47 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+
+import java.io.*;
 import java.util.StringTokenizer;
 
 public class Main {
 
-    public static void solution(int[] media, int lessonCnt, int blueLayCnt) {
-        int start = 0;
-        int end = 0;
-        for(int i : media) {
-            start = Math.max(start, i);
-            end += i;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int N = Integer.parseInt(st.nextToken());
+        int M = Integer.parseInt(st.nextToken());
+
+        int[] arr = new int[N];
+        st = new StringTokenizer(br.readLine());
+        int max = 0;
+        int min = 0;
+        int answer = 99999;
+        for(int i = 0; i < N; i++) {
+            arr[i] = Integer.parseInt(st.nextToken());
+            min = Math.max(arr[i], min);
+            max += arr[i];
         }
 
-        int cnt;
-        int sum = 0;
-        int mid = 0;
-        while(start <= end) {
-            mid = (start + end) / 2;
-            cnt = 0;
-            sum = 0;
-            for(int i : media) {
-                if(sum + i > mid) {
-                    sum = 0;
+        while(min <= max) {
+            int mid = (min + max) / 2;
+            int cnt = 0;
+            int sum = 0;
+            for(int a : arr) {
+                if((sum + a) <= mid) sum += a;
+                else {
                     cnt++;
+                    sum = a;
                 }
-                sum += i;
             }
             if(sum != 0) cnt++;
+            if(cnt > M) min = mid + 1;
+            else max = mid - 1;
 
-            if(cnt > blueLayCnt) {
-                start = mid + 1;
-            }else {
-                end = mid - 1;
-            }
         }
-        System.out.println(start);
 
-    }
+        bw.write(min + "");
+        bw.close();
 
-    public static void main(String[] args) {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-        try {
-            StringTokenizer st = new StringTokenizer(br.readLine(), " ");
-            int lessonCnt = Integer.parseInt(st.nextToken());
-            int blueLayCnt = Integer.parseInt(st.nextToken());
-            int[] media = new int[lessonCnt];
-            st = new StringTokenizer(br.readLine(), " ");
-            for(int i = 0; i < lessonCnt; i++) {
-                media[i] = Integer.parseInt(st.nextToken());
-            }
-            solution(media, lessonCnt, blueLayCnt);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }
