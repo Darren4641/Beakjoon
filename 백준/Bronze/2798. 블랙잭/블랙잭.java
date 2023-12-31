@@ -6,25 +6,24 @@ public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        StringTokenizer st = new StringTokenizer(br.readLine());
 
+        StringTokenizer st = new StringTokenizer(br.readLine());
         int N = Integer.parseInt(st.nextToken());
         int M = Integer.parseInt(st.nextToken());
 
-        int[] card = new int[N];
-
+        int[] cards = new int[N];
         st = new StringTokenizer(br.readLine());
-        for(int i = 0; i < N; i++) {
-            card[i] = Integer.parseInt(st.nextToken());
+        int index = 0;
+        while(N-- > 0) {
+            cards[index++] = Integer.parseInt(st.nextToken());
         }
         int answer = 0;
-        int sum = 0;
-        for(int i = 0; i < N - 2; i++) {
-            for(int j = i + 1; j < N - 1; j++) {
-                for(int k = j + 1; k < N; k++) {
-                    sum = card[i] + card[j] + card[k];
-                    if(sum <= M) {
-                        answer = Math.max(sum, answer);
+        for(int i = 0; i < cards.length - 2; i++) {
+            for(int j = i + 1; j < cards.length - 1; j++) {
+                for(int k = j + 1; k < cards.length; k++) {
+                    int temp = cards[i] + cards[j] + cards[k];
+                    if(temp <= M) {
+                        answer = Math.max(answer, temp);
                     }
                 }
             }
