@@ -1,29 +1,30 @@
 import java.io.*;
+import java.util.StringTokenizer;
 
 public class Main {
 
     public static void main(String[] args) throws IOException {
-
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
+//        198 + 1 + 9 + 8 = 216
+
         int N = Integer.parseInt(br.readLine());
-        bw.write(solve(N) + "");
-        bw.close();
-
-    }
-
-    public static int solve(int N) {
-        int M;
-        for(int i = 1; i <= N; i++) {
-            M = i;
-            for(int j = 0; j < String.valueOf(i).length(); j++) {
-                M += String.valueOf(i).charAt(j) - '0';
+        boolean isAnswer = false;
+        for(int i = 1; i < N; i++) {
+            int answer = i;
+            int temp = i;
+            int cnt = String.valueOf(answer).length();
+            for(int j = 0; j < cnt; j++) {
+                answer += String.valueOf(temp).charAt(j) - '0';
             }
-            if(M == N)
-                return i;
+            if(N == answer) {
+                isAnswer = true;
+                bw.write(i + "");
+                break;
+            }
         }
-
-       return 0;
+        if(!isAnswer) bw.write("0");
+        bw.close();
     }
 }
